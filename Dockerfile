@@ -1,6 +1,13 @@
+ARG GO_VERSION=1.21
+ARG GO_OS=linux
+ 
+# STAGE 1: building the executable
+FROM golang:${GO_VERSION}-alpine AS build
+
 FROM golang:latest
-# Add 'goapp' user
-RUN addgroup -S goapp && adduser -S -u 10000 -g goapp goapp
+
+# Create a user and group with specific IDs
+RUN groupadd -g 10000 goapp && useradd -u 10000 -g goapp -m goapp
 
 # Define the current working directory
 WORKDIR /usr/share/go
@@ -26,7 +33,7 @@ RUN go mod download
 COPY ./ ./
 
 # Build the Go application
-RUN CGO_ENABLED=0 go build \
+RUN CGO_ENABLED=0 GOOS=GO_OS go build \
     -o ./app ./cmd/app
 
 # Set permissions for the executable
