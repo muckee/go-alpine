@@ -5,6 +5,10 @@ WORKDIR /usr/share/go
 
 # Install Go dependencies
 COPY ./go.mod ./
+
+# Ensure that the Go cache is stored in a path with write permissions
+ENV GOCACHE /usr/share/go-cache
+
 RUN go mod download
 
 # Copy the source code into the image
