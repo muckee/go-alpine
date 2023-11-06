@@ -9,7 +9,7 @@ FROM golang:${GO_VERSION}-alpine AS build
 FROM golang:latest
 
 # Create a group with a specific GID
-RUN addgroup -g $GO_USER_ID $GO_USER_NAME
+RUN addgroup --gid $GO_USER_ID $GO_USER_NAME
 
 # Create a user with a specific UID and assign to the group
 RUN adduser -u $GO_USER_ID -G $GO_USER_NAME -h /home/$GO_USER_NAME -D $GO_USER_NAME
