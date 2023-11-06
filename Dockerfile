@@ -9,10 +9,10 @@ FROM golang:latest
 RUN addgroup --system goapp && adduser --system -u 10000 --group goapp goapp
 
 # # Create an empty directory for GOCACHE to disable caching.
-RUN mkdir -p /usr/share/go/go-cache && chown -R 10000:goapp /usr/share/go/
+RUN mkdir -p /usr/src/go/go-cache && chown -R 10000:goapp /usr/src/go/
 
 # Define Go cache directory
-ENV GOCACHE /usr/share/go/go-cache
+ENV GOCACHE /usr/src/go/go-cache
 
 # Define the current working directory
 WORKDIR /usr/share/go
