@@ -7,7 +7,7 @@ WORKDIR /usr/share/go
 COPY ./go.mod ./
 
 # Create the cache directory
-RUN mkdir /user/local/go-cache && chown -R 10000:10000 /usr/local/go-cache
+RUN mkdir /usr/local/go-cache && chown -R 10000:10000 /usr/local/go-cache
 
 # Specify the default user and group to run the application (10000:goapp).
 USER 10000
