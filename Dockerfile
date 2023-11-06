@@ -1,5 +1,7 @@
 ARG GO_VERSION=1.21
 ARG GO_OS=linux
+ARG GO_USER_ID=10000
+ARG GO_USER_NAME=goapp
  
 # STAGE 1: building the executable
 FROM golang:${GO_VERSION}-alpine AS build
@@ -7,7 +9,13 @@ FROM golang:${GO_VERSION}-alpine AS build
 FROM golang:latest
 
 # Create a user and group with specific IDs
-RUN groupadd -g 10000 goapp && useradd -u 10000 -g goapp -m goapp
+RUN groupadd -g $GO_USER_ID $GO_USER_NAME && useradd -u $GO_USER_ID -g $GO_USER_NAME -m $GO_USER_NAME
+
+# # Create an empty directory for GOCACHE to disable caching.
+# RUN mkdir /go-cache && chown -R $GO_USER_NAME:$GO_USER_NAME /go-cache
+
+# # Define Go cache directory
+# ENV GOCACHE /go-cache
 
 # Define the current working directory
 WORKDIR /usr/share/go
@@ -15,17 +23,6 @@ WORKDIR /usr/share/go
 # Install Go dependencies
 COPY ./go.mod ./
 
-# # Create the cache directory
-# RUN mkdir /go-cache \
-#     && chown -R 1000:1000 /go-cache \
-#     && chmod -R +t /go-cache
-
-# # Specify the default user and group to run the application (10000:goapp).
-# USER 1000
-# USER :1000
-
-# Define Go cache directory
-ENV GOCACHE /dev/null
 # Install Go dependencies
 RUN go mod download
 
@@ -38,14 +35,10 @@ RUN CGO_ENABLED=0 GOOS=$GO_OS go build \
 
 # Set permissions for the executable
 RUN chmod 770 ./app && \
-    chown 10000:goapp ./app
-
-# # Set permissions for the executable
-# RUN chmod 770 /app && \
-#     chown 10000:goapp /app
+    chown $GO_USER_ID:$GO_USER_NAME ./app
 
 # Create user
-USER goapp
+USER $GO_USER_NAME
 
 # Execute the Go application
 CMD ["./app"]
