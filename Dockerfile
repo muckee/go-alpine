@@ -7,14 +7,14 @@ WORKDIR /usr/share/go
 COPY ./go.mod ./
 
 # Create the cache directory
-RUN mkdir /.cache && chown -R 10000:10000 /.cache
+RUN mkdir /user/local/go-cache && chown -R 10000:10000 /usr/local/go-cache
 
 # Specify the default user and group to run the application (10000:goapp).
 USER 10000
 USER :10000
 
 # Define Go cache directory
-ENV GOCACHE /.cache
+ENV GOCACHE /usr/local/go-cache
 
 # Install Go dependencies
 RUN go mod download
