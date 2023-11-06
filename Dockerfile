@@ -6,7 +6,7 @@ FROM golang:${GO_VERSION}-alpine AS build
 FROM golang:latest
 
 # Create a user with a specific UID and assign them to the group
-RUN addgroup -S goapp && adduser -S -u 10000 -g goapp goapp
+RUN addgroup --system goapp && adduser --system -u 10000 -g goapp goapp
 
 # # Create an empty directory for GOCACHE to disable caching.
 RUN mkdir -p /usr/share/go/go-cache && chown -R 10000:goapp /usr/share/go/
