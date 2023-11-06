@@ -33,7 +33,7 @@ RUN go mod download
 COPY ./ ./
 
 # Build the Go application
-RUN CGO_ENABLED=0 GOOS=GO_OS go build \
+RUN CGO_ENABLED=0 GOOS=$GO_OS go build \
     -o ./app ./cmd/app
 
 # Set permissions for the executable
