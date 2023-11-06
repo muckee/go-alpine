@@ -8,8 +8,11 @@ FROM golang:${GO_VERSION}-alpine AS build
 
 FROM golang:latest
 
-# Create a user and group with specific IDs
-RUN groupadd -g $GO_USER_ID $GO_USER_NAME && useradd -u $GO_USER_ID -g $GO_USER_NAME -m $GO_USER_NAME
+# Create a group with a specific GID
+RUN addgroup -g $GO_USER_ID $GO_USER_NAME
+
+# Create a user with a specific UID and assign to the group
+RUN adduser -u $GO_USER_ID -G $GO_USER_NAME -h /home/$GO_USER_NAME -D $GO_USER_NAME
 
 # # Create an empty directory for GOCACHE to disable caching.
 # RUN mkdir /go-cache && chown -R $GO_USER_NAME:$GO_USER_NAME /go-cache
