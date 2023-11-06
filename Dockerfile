@@ -1,4 +1,6 @@
 FROM golang:latest
+# Add 'goapp' user
+RUN addgroup -S goapp && adduser -S -u 10000 -g goapp goapp
 
 # Define the current working directory
 WORKDIR /usr/share/go
@@ -6,18 +8,17 @@ WORKDIR /usr/share/go
 # Install Go dependencies
 COPY ./go.mod ./
 
-# Create the cache directory
-RUN mkdir /go-cache \
-    && chown -R 1000:1000 /go-cache \
-    && chmod -R +t /go-cache
+# # Create the cache directory
+# RUN mkdir /go-cache \
+#     && chown -R 1000:1000 /go-cache \
+#     && chmod -R +t /go-cache
 
-# Specify the default user and group to run the application (10000:goapp).
-USER 1000
-USER :1000
+# # Specify the default user and group to run the application (10000:goapp).
+# USER 1000
+# USER :1000
 
 # Define Go cache directory
-ENV GOCACHE /go-cache
-
+ENV GOCACHE /dev/null
 # Install Go dependencies
 RUN go mod download
 
@@ -28,9 +29,16 @@ COPY ./ ./
 RUN CGO_ENABLED=0 go build \
     -o ./app ./cmd/app
 
+# Set permissions for the executable
+RUN chmod 770 ./app && \
+    chown 10000:goapp ./app
+
 # # Set permissions for the executable
 # RUN chmod 770 /app && \
-#     chown 10000:goserver /app
+#     chown 10000:goapp /app
+
+# Create user
+USER goapp
 
 # Execute the Go application
 CMD ["./app"]
