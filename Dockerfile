@@ -40,7 +40,7 @@ RUN mkdir go && \
     CGO_ENABLED=0 \
     GOOS=linux \
     go build \
-    -o =/go/app ./cmd/app
+    -o =./app ./cmd/app
 
 # Set permissions for the executable
 RUN chmod 770 ./app
