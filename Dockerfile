@@ -13,6 +13,8 @@ FROM golang:latest
 
 # Define Go cache directory
 ENV GOCACHE /tmp/gocache
+ENV CGO_ENABLED 0
+ENV GOOS linux
 
 # RUN mkdir "$GOCACHE" && chmod -R 1770 "$GOCACHE"
 
@@ -28,7 +30,7 @@ RUN go mod download
 COPY ./ ./
 
 # Build the Go application
-RUN CGO_ENABLED=0 GOOS=linux go build \
+RUN go build \
     -o ./app ./cmd/app
 
 # Set permissions for the executable
