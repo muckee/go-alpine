@@ -35,8 +35,12 @@ RUN go mod download
 COPY ./ ./
 
 # Build the Go application
-RUN GOCACHE=/tmp/gocache CGO_ENABLED=0 GOOS=linux go build \
-    -o ./app ./cmd/app
+RUN mkdir go && \
+    GOCACHE=/tmp/gocache \
+    CGO_ENABLED=0 \
+    GOOS=linux \
+    go build \
+    -o =/go/app ./cmd/app
 
 # Set permissions for the executable
 RUN chmod 770 ./app
