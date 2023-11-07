@@ -5,17 +5,17 @@ FROM golang:${GO_VERSION}-alpine AS build
 
 FROM golang:latest
 
-# Create a user with a specific UID and assign them to the group
-RUN addgroup --shell goapp && adduser --shell -u 10000 --group goapp goapp
+# # Create a user with a specific UID and assign them to the group
+# RUN addgroup --shell goapp && adduser --shell -u 10000 --group goapp goapp
 
-# # Create an empty directory for GOCACHE to disable caching.
-RUN mkdir -p /usr/src/go/go-cache && chown -R 10000:goapp /usr/src/go/
+# # # Create an empty directory for GOCACHE to disable caching.
+# RUN mkdir -p /usr/src/go/go-cache && chown -R 10000:goapp /usr/src/go/
+
+# Create cache directory
+RUN mkdir /go/go-cache
 
 # Define Go cache directory
-ENV GOCACHE /usr/src/go/go-cache
-
-# Define the current working directory
-WORKDIR /usr/share/go
+ENV GOCACHE /go/go-cache
 
 # Install Go dependencies
 COPY ./go.mod ./
@@ -38,4 +38,4 @@ RUN chmod 770 ./app
 USER goapp
 
 # Execute the Go application
-CMD ["./app"]
+CMD ["/go/app"]
