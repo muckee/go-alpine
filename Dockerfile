@@ -11,9 +11,9 @@ FROM golang:latest
 # # # Create an empty directory for GOCACHE to disable caching.
 # RUN mkdir -p /usr/src/go/go-cache && chown -R 10000:goapp /usr/src/go/
 # Define Go cache directory
-ENV GOCACHE /.go-cache
+# ENV GOCACHE /tmp/gocache
 
-RUN mkdir "$GOCACHE" && chmod -R 1770 "$GOCACHE"
+# RUN mkdir "$GOCACHE" && chmod -R 1770 "$GOCACHE"
 
 WORKDIR /usr/src/app
 
