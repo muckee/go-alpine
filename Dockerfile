@@ -11,10 +11,10 @@ FROM golang:latest
 # # # Create an empty directory for GOCACHE to disable caching.
 # RUN mkdir -p /usr/src/go/go-cache && chown -R 10000:goapp /usr/src/go/
 
-# Define Go cache directory
-ENV GOCACHE /tmp/gocache
-ENV CGO_ENABLED 0
-ENV GOOS linux
+# # Define Go cache directory
+# ENV GOCACHE /tmp/gocache
+# ENV CGO_ENABLED 0
+# ENV GOOS linux
 
 # RUN mkdir "$GOCACHE" && chmod -R 1770 "$GOCACHE"
 
@@ -30,7 +30,7 @@ RUN go mod download
 COPY ./ ./
 
 # Build the Go application
-RUN go build \
+RUN GOCACHE=/tmp/gocache CGO_ENABLED=0 GOOS=linux go build \
     -o ./app ./cmd/app
 
 # Set permissions for the executable
