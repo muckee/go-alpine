@@ -10,12 +10,12 @@ FROM golang:latest
 
 # # # Create an empty directory for GOCACHE to disable caching.
 # RUN mkdir -p /usr/src/go/go-cache && chown -R 10000:goapp /usr/src/go/
-
-# Create cache directory
-RUN mkdir /go/go-cache
-
 # Define Go cache directory
-ENV GOCACHE /go/go-cache
+ENV GOCACHE /.go-cache
+
+RUN mkdir "$GOCACHE" && chmod -R 1770 "$GOCACHE"
+
+WORKDIR /usr/src/app
 
 # Install Go dependencies
 COPY ./go.mod ./
@@ -34,8 +34,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build \
 RUN chmod 770 ./app
     # chown $GO_USER_ID:$GO_USER_NAME ./app
 
-# Set user
-USER goapp
+# # Set user
+# USER goapp
 
 # Execute the Go application
 CMD ["/go/app"]
