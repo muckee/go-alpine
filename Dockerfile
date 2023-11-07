@@ -39,14 +39,15 @@ RUN GOCACHE=/tmp/gocache \
     CGO_ENABLED=0 \
     GOOS=linux \
     go build \
-    -o =./app ./cmd/app
+    -o ./app ./cmd/app \
+    && mv ./app /
 
 # Set permissions for the executable
-RUN chmod 770 ./app
+RUN chmod 770 /app
     # chown $GO_USER_ID:$GO_USER_NAME ./app
 
 # # Set user
 # USER goapp
 
 # Execute the Go application
-CMD ["/go/app"]
+CMD ["/app"]
