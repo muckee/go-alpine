@@ -35,8 +35,7 @@ RUN go mod download
 COPY ./ ./
 
 # Build the Go application
-RUN mkdir go && \
-    GOCACHE=/tmp/gocache \
+RUN GOCACHE=/tmp/gocache \
     CGO_ENABLED=0 \
     GOOS=linux \
     go build \
