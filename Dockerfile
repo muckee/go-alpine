@@ -18,6 +18,11 @@ FROM golang:latest
 
 # RUN mkdir "$GOCACHE" && chmod -R 1770 "$GOCACHE"
 
+RUN mkdir /usr/src/go-cache \
+    && chmod -R 1770 /usr/src/go-cache
+
+ENV GOCACHE /usr/src/go-cache
+
 WORKDIR /usr/src/app
 
 # Install Go dependencies
