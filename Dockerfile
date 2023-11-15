@@ -26,6 +26,7 @@ ENV GOCACHE /usr/src/go-cache
 WORKDIR /usr/src/app
 
 # Install Go dependencies
+# TODO: Repo directory structure should follow the same format as the `go-scratch` image, in order to later enhance dynamicism in templates
 COPY ./go.mod ./
 
 # Install Go dependencies
