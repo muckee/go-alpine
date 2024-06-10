@@ -1,3 +1,3 @@
 module go-alpine-example.thugnerdz.com
 
-go 1.21
+go 1.23
